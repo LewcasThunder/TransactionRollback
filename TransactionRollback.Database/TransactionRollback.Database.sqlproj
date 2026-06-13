@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="0.1.19-preview" />
+  <PropertyGroup>
+    <Name>TransactionRollback.Database</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <ProjectGuid>{985d0ad1-543c-47c8-9b6c-61241c567f0d}</ProjectGuid>
+    <EnableDefaultSqlItems>false</EnableDefaultSqlItems>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\tables\" />
+    <Build Include="dbo\tables\Example.sql" />
+  </ItemGroup>
+</Project>

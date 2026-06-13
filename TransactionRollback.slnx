@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="TransactionRollback.Common/TransactionRollback.Common.csproj" />
+  <Project Path="TransactionRollback.Database/TransactionRollback.Database.sqlproj" Id="985d0ad1-543c-47c8-9b6c-61241c567f0d">
+    <Deploy />
+  </Project>
+  <Project Path="TransactionRollback.Npoco/TransactionRollback.Npoco.csproj" />
+  <Project Path="TransactionRollback.EntityFramework/TransactionRollback.EntityFramework.csproj" />
+  <Project Path="TransactionRollback.Tests/TransactionRollback.Tests.csproj" />
+</Solution>
