@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TransactionRollback.Common\TransactionRollback.Common.csproj" />
     <ProjectReference Include="..\TransactionRollback.Npoco\TransactionRollback.Npoco.csproj" />
     <ProjectReference Include="..\TransactionRollback.EntityFramework\TransactionRollback.EntityFramework.csproj" />
   </ItemGroup>

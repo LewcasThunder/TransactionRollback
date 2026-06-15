@@ -4,10 +4,11 @@ namespace TransactionRollback.EntityFramework
 {
     public static class Connection
     {
-        public static ExampleDbContext Get(string connectionString) =>
-            new(new DbContextOptionsBuilder<ExampleDbContext>().UseSqlServer(connectionString).Options);
+        public static TContext Get<TContext>(string connectionString) where TContext : DbContext =>
+            (TContext)Activator.CreateInstance(typeof(TContext),
+                new DbContextOptionsBuilder<TContext>().UseSqlServer(connectionString).Options)!;
 
-        public static async Task RunInRolledBackTransactionAsync(this ExampleDbContext context, Func<ExampleDbContext, Task> test)
+        public static async Task RunInRolledBackTransactionAsync<TContext>(this TContext context, Func<TContext, Task> test) where TContext : DbContext
         {
             await context.Database.BeginTransactionAsync();
             try
@@ -20,11 +21,14 @@ namespace TransactionRollback.EntityFramework
             }
         }
 
-        public static async Task Setup(ExampleDbContext context)
+        public static async Task Setup(DbContext context, ITestData testData)
         {
-            await context.Database.ExecuteSqlRawAsync("DELETE FROM Example");
-            foreach (var row in Common.TestData.Example.Rows)
-                await context.Database.ExecuteSqlRawAsync("INSERT INTO Example ([Column]) VALUES ({0})", row.Column);
+            await context.Database.ExecuteSqlRawAsync($"DELETE FROM {testData.TableName}");
+            var cols = string.Join(", ", testData.Columns.Select(c => $"[{c}]"));
+            var placeholders = string.Join(", ", Enumerable.Range(0, testData.Columns.Count).Select(i => $"{{{i}}}"));
+            var insertSql = $"INSERT INTO {testData.TableName} ({cols}) VALUES ({placeholders})";
+            foreach (var row in testData.Rows)
+                await context.Database.ExecuteSqlRawAsync(insertSql, row);
         }
     }
 }

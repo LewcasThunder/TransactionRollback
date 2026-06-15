@@ -14,11 +14,14 @@ namespace TransactionRollback.Npoco
             await test(database);
         }
 
-        public static void Setup(IDatabase database)
+        public static void Setup(IDatabase database, ITestData testData)
         {
-            database.Execute("DELETE FROM Example");
-            foreach (var row in Common.TestData.Example.Rows)
-                database.Execute("INSERT INTO Example ([Column]) VALUES (@0)", row.Column);
+            database.Execute($"DELETE FROM {testData.TableName}");
+            var cols = string.Join(", ", testData.Columns.Select(c => $"[{c}]"));
+            var placeholders = string.Join(", ", Enumerable.Range(0, testData.Columns.Count).Select(i => $"@{i}"));
+            var insertSql = $"INSERT INTO {testData.TableName} ({cols}) VALUES ({placeholders})";
+            foreach (var row in testData.Rows)
+                database.Execute(insertSql, row);
         }
     }
 }

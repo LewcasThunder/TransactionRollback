@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using TransactionRollback.EntityFramework;
+using TransactionRollback.Tests.Common;
 
 namespace TransactionRollback.Tests
 {
@@ -10,12 +11,12 @@ namespace TransactionRollback.Tests
         [Test]
         public async Task TransactionShouldInsertTestDataAndRollBackCorrectly()
         {
-            await using var context = Connection.Get(Common.Configuration.ConnectionString);
+            await using var context = Connection.Get<ExampleDbContext>(Configuration.ConnectionString);
             var countBefore = await context.Example.CountAsync();
 
             await context.RunInRolledBackTransactionAsync(async databaseContext =>
             {
-                await Connection.Setup(databaseContext);
+                await Connection.Setup(databaseContext, new ExampleTestData());
                 Assert.That(
                     await databaseContext.Example.CountAsync(),
                     Is.EqualTo(Common.TestData.Example.Rows.Count));

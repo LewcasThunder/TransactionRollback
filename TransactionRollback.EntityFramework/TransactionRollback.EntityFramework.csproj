@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TransactionRollback.Common\TransactionRollback.Common.csproj" />
-  </ItemGroup>
-
 </Project>
